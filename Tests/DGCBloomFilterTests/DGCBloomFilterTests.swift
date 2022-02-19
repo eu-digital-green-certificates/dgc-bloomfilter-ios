@@ -29,10 +29,10 @@ final class DGCBloomFilterTests: XCTestCase {
 			}
 			// get base64 string of filter after all elems have been added
 			//guard let dataFromArray = arrayToData(intArray: filter.getData()) else { throw FilterError.unknownError } /// Seems to be broken!
-            let base64String = Data(("["+filter.getData().map{String($0)}.joined(separator: ", ")+"]").utf8).base64EncodedString()
-        
+			let base64String = Data(("["+filter.getData().map{String($0)}.joined(separator: ", ")+"]").utf8).base64EncodedString()
+			
 			print("Swift Filter: \(base64String) vs. Java: \(element.filter)")
-            XCTAssert(base64String.elementsEqual(element.filter), "BASE64COMPARE NOT EQUAL")
+			XCTAssert(base64String.elementsEqual(element.filter), "BASE64COMPARE NOT EQUAL")
 			var exists: [Int32] = [Int32](repeating: 0, count: element.data.count)
 			//var exists: [Int32] = [Int32(element.data.count)]
 			for x in 0..<element.data.count {
@@ -49,43 +49,43 @@ final class DGCBloomFilterTests: XCTestCase {
 	}
 	
 	func stringArrayToData(stringArray: [String]) -> Data? {
-	  return try? JSONSerialization.data(withJSONObject: stringArray, options: [])
+		return try? JSONSerialization.data(withJSONObject: stringArray, options: [])
 	}
 	
 	func arrayToData(intArray: [Int32]) -> Data? {
 		return try? JSONSerialization.data(withJSONObject: intArray, options: [])
 	}
-    
+	
 	func array2ToData(intArray: [Int]) -> Data? {
 		return try? JSONSerialization.data(withJSONObject: intArray, options: [])
 	}
 	
-    func testRunBasicBloom() throws {
-        let impl = BloomFilter(memorySize: 1, hashesNumber: 1, elementsNumber: 1)!
-        impl.add(element: Data([0, 5, 33, 44]))
-        XCTAssert(!impl.mightContain(element:Data( [0, 5, 88, 44])))
-        XCTAssert(impl.mightContain(element:Data( [0, 5, 33, 44])))
-        XCTAssert(impl.getData().count == 1)
-        XCTAssert(impl.getData()[0] == (Int32.min >>> 26))
-    }
-    
-    func testBigInteger() throws {
-        var val = BloomFilter.calcIndex(element: Data([11]), index: 1, numberOfBits: 100).asInt()
-        XCTAssert(val == 75)
-        val = BloomFilter.calcIndex(element: Data([1]), index: 1, numberOfBits: 1).asInt()
-        XCTAssert( val == 0)
-    }
-    
-    func testHash() throws {
-        let hash = BloomFilter.hash(data: Data([11]), hashFunction: HashFunctions.SHA256, seed: 1)
-        XCTAssert(hash.base64EncodedString() == "G2lkA9iYJ1bCNq+8WwnA9U3QaC7lNKddxLcKXV7Quo8=" )
-    }
-    
-    func testRandom() throws {
-        let filter = BloomFilter(elementsNumber: 62, probabilityRate:0.01)!
-        
-        filter.add(element: Data([16, 43, 72, 132, 157, 34, 143, 179, 78, 151, 143, 30, 166, 231, 218, 70, 76, 109, 164, 229, 241, 65, 36, 143, 3, 141, 252, 207, 175, 255, 69, 131, 234, 53, 207, 65, 31, 65, 18, 60, 200, 239, 16, 5, 245, 5, 253, 207, 4, 208, 122, 31, 219, 143, 54, 221, 173, 142, 62, 57, 125, 120, 230, 106 ]))
-    }
+	func testRunBasicBloom() throws {
+		let impl = BloomFilter(memorySize: 1, hashesNumber: 1, elementsNumber: 1)!
+		impl.add(element: Data([0, 5, 33, 44]))
+		XCTAssert(!impl.mightContain(element:Data( [0, 5, 88, 44])))
+		XCTAssert(impl.mightContain(element:Data( [0, 5, 33, 44])))
+		XCTAssert(impl.getData().count == 1)
+		XCTAssert(impl.getData()[0] == (Int32.min >>> 26))
+	}
+	
+	func testBigInteger() throws {
+		var val = BloomFilter.calcIndex(element: Data([11]), index: 1, numberOfBits: 100).asInt()
+		XCTAssert(val == 75)
+		val = BloomFilter.calcIndex(element: Data([1]), index: 1, numberOfBits: 1).asInt()
+		XCTAssert( val == 0)
+	}
+	
+	func testHash() throws {
+		let hash = BloomFilter.hash(data: Data([11]), hashFunction: HashFunctions.SHA256, seed: 1)
+		XCTAssert(hash.base64EncodedString() == "G2lkA9iYJ1bCNq+8WwnA9U3QaC7lNKddxLcKXV7Quo8=" )
+	}
+	
+	func testRandom() throws {
+		let filter = BloomFilter(elementsNumber: 62, probabilityRate:0.01)!
+		
+		filter.add(element: Data([16, 43, 72, 132, 157, 34, 143, 179, 78, 151, 143, 30, 166, 231, 218, 70, 76, 109, 164, 229, 241, 65, 36, 143, 3, 141, 252, 207, 175, 255, 69, 131, 234, 53, 207, 65, 31, 65, 18, 60, 200, 239, 16, 5, 245, 5, 253, 207, 4, 208, 122, 31, 219, 143, 54, 221, 173, 142, 62, 57, 125, 120, 230, 106 ]))
+	}
 	
 	func float() {
 		let fVal: Float = 0.000001
@@ -103,11 +103,11 @@ final class DGCBloomFilterTests: XCTestCase {
 	}
 	
 	/**
-	
+	 
 	 */
 	func testByteStream() throws {
-        let probRate: Float =  0.000000001
-        let probRate2: Float = 0.000000001
+		let probRate: Float =  0.000000001
+		let probRate2: Float = 0.000000001
 		let numberOfElements = 500
 		let base64String = "AAEeADCJcF8AAAH0AAAABQAAAqIAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAIAAAAAAEAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAQAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAAAAAAAEAAAgAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAABAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAACAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACCAIAAAAAAAAAAEAAAAAAAAAAABAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAEAAAQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAAAAAAAAAACEAAAAAAAAAAAAAAACAAAAAAAAAACAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAACAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgAAAAAAAgAAAAAAgAAACAAAAAQAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgCAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAgAQAAAAAAAAAAAQAAAAAAAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAEAAAAgAAAAAAAAIAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAACAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAEAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAAAAAAAAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAADAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIAAAAAAABAAAAAAAIAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAgAAAAAAQgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 		let filterData = Data(base64Encoded: base64String)
@@ -116,22 +116,19 @@ final class DGCBloomFilterTests: XCTestCase {
 		let filter = BloomFilter()
 		try filter.readFrom(data: filterData!)
 		XCTAssert(filter.getData().count != 0)
-        XCTAssert(filter.probRate.bitPattern == probRate.bitPattern)
+		XCTAssert(filter.probRate.bitPattern == probRate.bitPattern)
 		XCTAssert(filter.getData().count == 674)
 		XCTAssert(filter.currentElementAmount == 5)
 		XCTAssert(filter.definedElementAmount == numberOfElements)
 		XCTAssert(try filter.mightContain(element: Data([5, 3, 2, 7])))
-        XCTAssert(try filter.mightContain(element: Data([5, 3, 0])))
-        XCTAssert(try filter.mightContain(element: Data([5, 2, 7])))
-        XCTAssert(try filter.mightContain(element: Data([5, 1, 2, 0])))
-        XCTAssert(try !filter.mightContain(element: Data([0,3,6,7,2])))
-        XCTAssert(try filter.mightContain(element: Data([5])))
-        XCTAssert(try !filter.mightContain(element: Data([0])))
-   
+		XCTAssert(try filter.mightContain(element: Data([5, 3, 0])))
+		XCTAssert(try filter.mightContain(element: Data([5, 2, 7])))
+		XCTAssert(try filter.mightContain(element: Data([5, 1, 2, 0])))
+		XCTAssert(try !filter.mightContain(element: Data([0,3,6,7,2])))
+		XCTAssert(try filter.mightContain(element: Data([5])))
+		XCTAssert(try !filter.mightContain(element: Data([0])))
+		
 	}
-	
-	
-	
 }
 
 private enum TestError: Error {
