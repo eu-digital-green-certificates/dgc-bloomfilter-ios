@@ -1,3 +1,3 @@
-# dgca-bloomfilter-ios
+# dgc-bloomfilter-ios
 
 A description of this package.
