@@ -35,8 +35,9 @@ public class BloomFilter {
 	private let NUM_BITS = 8                           // number of bits to use for one byte
 	private let NUM_FORMAT: UInt32 = UInt32(MemoryLayout<UInt32>.size * 8)
 	
-	public init() {
+    public init(data: Data) {
 		self.array = []
+        readFrom(data: data)
 	}
 	
 	public init?(memorySize: Int, hashesNumber: UInt8, elementsNumber: Int) {
